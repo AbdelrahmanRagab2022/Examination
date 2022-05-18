@@ -1,0 +1,48 @@
+﻿@model Examination.Models.student
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>student</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.stud_Fname)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.stud_Fname)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.stud_Lname)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.stud_Lname)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.stud_Username)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.stud_Username)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.stud_pw)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.stud_pw)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.dept)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.dept.dept_name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.stud_ID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

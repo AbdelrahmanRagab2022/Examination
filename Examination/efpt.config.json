@@ -1,0 +1,119 @@
+﻿{
+   "CodeGenerationMode": 2,
+   "ContextClassName": "ExamSystemContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": true,
+   "ModelNamespace": null,
+   "OutputContextPath": "Data",
+   "OutputPath": "Models",
+   "ProjectRootNamespace": "Examination",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "[dbo].[choices]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[courses]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[department]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[exams]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[exams_questions]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Inst_Courses]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[instructor]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[questions]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[stud_courses]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[students]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[topics]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AssignExamGrade]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[AssignExamStudent]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[courses_delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[courses_insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[courses_update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[generateExam]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[students_delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[students_insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[students_select]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[students_update]",
+         "ObjectType": 1
+      }
+   ],
+   "UiHint": "BIDO.ExamSystem",
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": true,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoConstructor": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false
+}
