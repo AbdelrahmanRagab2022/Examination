@@ -38,7 +38,7 @@ foreach(var x in Model){
         <style>
             .main{
                 display:flex;
-               
+        
             }
             .details{
                 border:1px solid gray;
@@ -59,18 +59,18 @@ foreach(var x in Model){
                 <p> ID :@std.stud_ID</p>
                  <p> NAME :@(std.stud_Fname +" "+ @std.stud_Lname)</p>
                    <p>DEPT ID :@dpt.dept_name</p>
-        </div>
+</div>
     <div class="courses">
         <select>
-        @{
-            foreach(course c in Model.courses){
+    @{
+        foreach(course c in Model.courses){
                         <option>@c.c_name</option>
 
             }}
     </select>
     <input type="button" asp-action=""  asp-asp-controller="student" value="Start Exam" class="btn-success"/> <!--here is tsrt exam action ->
     </div>
-       </div>
+</div>
     </body>
 </html>
 
