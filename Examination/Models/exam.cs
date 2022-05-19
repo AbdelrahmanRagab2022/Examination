@@ -13,12 +13,9 @@ namespace Examination.Models
         }
 
         public int exam_ID { get; set; }
-        public int? exam_grade { get; set; }
         public int course_ID { get; set; }
-        public int? stud_ID { get; set; }
 
         public virtual course course { get; set; }
-        public virtual student stud { get; set; }
         public virtual ICollection<exams_question> exams_questions { get; set; }
     }
 }

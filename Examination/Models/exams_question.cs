@@ -9,8 +9,10 @@ namespace Examination.Models
     {
         public int exam_ID { get; set; }
         public int q_ID { get; set; }
-        public string answer { get; set; }
+        public int? answer { get; set; }
+        public int St_ID { get; set; }
 
+        public virtual student St { get; set; }
         public virtual exam exam { get; set; }
         public virtual question q_IDNavigation { get; set; }
     }

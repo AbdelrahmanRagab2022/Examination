@@ -58,14 +58,6 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[AssignExamGrade]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[dbo].[AssignExamStudent]",
-         "ObjectType": 1
-      },
-      {
          "Name": "[dbo].[courses_delete]",
          "ObjectType": 1
       },
@@ -75,10 +67,6 @@
       },
       {
          "Name": "[dbo].[courses_update]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[dbo].[generateExam]",
          "ObjectType": 1
       },
       {
@@ -98,7 +86,7 @@
          "ObjectType": 1
       }
    ],
-   "UiHint": "BIDO.ExamSystem",
+   "UiHint": "DESKTOP-CGIATHS.ExamSystem",
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": true,
    "UseDbContextSplitting": false,

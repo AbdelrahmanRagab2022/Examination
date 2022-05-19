@@ -1,0 +1,78 @@
+﻿@*@model IEnumerable<Examination.Models.course>*@
+@using Examination.Models
+@*
+
+@using MultipleModelInOneView; *@
+
+@model dynamic;
+
+
+
+@{
+    ViewData["Title"] = "stud_details";
+    student std = @Model.student;
+    department dpt = @Model.department;
+}
+
+@*<div>
+    <div>
+        <select>
+@{
+if(Model!=null)
+foreach(var x in Model){
+    <option>@x.c_name</option>
+}
+}
+
+}
+</select>
+
+<input type="button" class="btn-primary" value="Start Exam"/>
+    </div>
+    <div>
+        <a asp-action="stud_details2"> student details</a>
+    </div>
+</div>*@
+<html>
+    <head>
+        <style>
+            .main{
+                display:flex;
+               
+            }
+            .details{
+                border:1px solid gray;
+                width:300px;
+                height:200px;
+                padding:5px;
+            }
+            select{
+                display:block;
+            }
+
+        </style>
+        <link rel="stylesheet" href="../wwwroot/lib/bootstrap/dist/css/bootstrap.css"/>
+    </head>
+    <body>
+       <div class="container main">
+            <div class="details">
+                <p> ID :@std.stud_ID</p>
+                 <p> NAME :@(std.stud_Fname +" "+ @std.stud_Lname)</p>
+                   <p>DEPT ID :@dpt.dept_name</p>
+        </div>
+    <div class="courses">
+        <select>
+        @{
+            foreach(course c in Model.courses){
+                        <option>@c.c_name</option>
+
+            }}
+    </select>
+    <input type="button" asp-action=""  asp-asp-controller="student" value="Start Exam" class="btn-success"/> <!--here is tsrt exam action ->
+    </div>
+       </div>
+    </body>
+</html>
+
+
+

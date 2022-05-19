@@ -29,14 +29,14 @@ namespace Examination.Data
         public virtual DbSet<student> students { get; set; }
         public virtual DbSet<topic> topics { get; set; }
 
-//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//        {
-//            if (!optionsBuilder.IsConfigured)
-//            {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=ExamSystem;Integrated Security=True");
-//            }
-//        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=ExamSystem;Integrated Security=True");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -106,20 +106,17 @@ namespace Examination.Data
                     .HasForeignKey(d => d.course_ID)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_exams_courses");
-
-                entity.HasOne(d => d.stud)
-                    .WithMany(p => p.exams)
-                    .HasForeignKey(d => d.stud_ID)
-                    .HasConstraintName("FK_exams_students");
             });
 
             modelBuilder.Entity<exams_question>(entity =>
             {
-                entity.HasKey(e => new { e.exam_ID, e.q_ID });
+                entity.HasKey(e => new { e.exam_ID, e.q_ID, e.St_ID });
 
-                entity.Property(e => e.answer)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.HasOne(d => d.St)
+                    .WithMany(p => p.exams_questions)
+                    .HasForeignKey(d => d.St_ID)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_exams_questions_students");
 
                 entity.HasOne(d => d.exam)
                     .WithMany(p => p.exams_questions)
@@ -139,6 +136,9 @@ namespace Examination.Data
                 entity.HasKey(e => e.inst_ID);
 
                 entity.ToTable("instructor");
+
+                entity.HasIndex(e => e.inst_username, "IX_instructor")
+                    .IsUnique();
 
                 entity.Property(e => e.inst_ID).ValueGeneratedNever();
 
@@ -196,6 +196,9 @@ namespace Examination.Data
             modelBuilder.Entity<student>(entity =>
             {
                 entity.HasKey(e => e.stud_ID);
+
+                entity.HasIndex(e => e.stud_Username, "IX_students")
+                    .IsUnique();
 
                 entity.Property(e => e.stud_ID).ValueGeneratedNever();
 

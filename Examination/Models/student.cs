@@ -9,7 +9,7 @@ namespace Examination.Models
     {
         public student()
         {
-            exams = new HashSet<exam>();
+            exams_questions = new HashSet<exams_question>();
             courses = new HashSet<course>();
         }
 
@@ -21,7 +21,7 @@ namespace Examination.Models
         public string stud_pw { get; set; }
 
         public virtual department dept { get; set; }
-        public virtual ICollection<exam> exams { get; set; }
+        public virtual ICollection<exams_question> exams_questions { get; set; }
 
         public virtual ICollection<course> courses { get; set; }
     }

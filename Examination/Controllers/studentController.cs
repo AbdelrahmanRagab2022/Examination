@@ -10,6 +10,7 @@ using Examination.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using System.Dynamic;
 
 namespace Examination.Controllers
 {
@@ -17,7 +18,8 @@ namespace Examination.Controllers
     public class studentController : Controller
     {
         private readonly ExamSystemContext _context;
-
+         public student std;
+   
         public studentController(ExamSystemContext context)
         {
             _context = context;
@@ -198,23 +200,62 @@ namespace Examination.Controllers
 
         public async Task<IActionResult> Login(string returnurl, string stud_Username, string stud_PW)
         {
+        //    studentName = stud_Username;
+        //    studentpassword = stud_PW;
             returnurl = returnurl ?? "/";
-            student std = _context.students.FirstOrDefault(i=>i.stud_Username== stud_Username);
+            std = _context.students.FirstOrDefault(i=>i.stud_Username== stud_Username);
             if(std == null || std.stud_pw!=stud_PW)
             {
                 return RedirectToAction("Login");
             }
             Claim c1 = new Claim("stud_Username", stud_Username);
             Claim c2 = new Claim("stud_Pw", stud_PW);
+            Claim c4 = new Claim("stud_ID", std.stud_ID.ToString());
             Claim c3 = new Claim(ClaimTypes.Role, "Student");
             ClaimsIdentity identity = new ClaimsIdentity("Cookies");
             identity.AddClaim(c1);
-             identity.AddClaim(c2);
+            identity.AddClaim(c2);
+            identity.AddClaim(c4);
             identity.AddClaim(c3);
             ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync("Cookies", claimsPrincipal);
-            return Redirect(returnurl);
+            return RedirectToAction("stud_details");
         }
+        public IActionResult stud_details()
+        {
+           int st_id= int.Parse(HttpContext.User.Claims.FirstOrDefault(a=>a.Type=="stud_ID").Value);
+            dynamic model = new ExpandoObject();
+            //model.student = from x in _context.students
+            //                where x.stud_ID == st_id
+            //                select x;
+           // model.student = _context.students.FirstOrDefault(i => i.stud_ID == st_id);
+            model.student = (_context.students.Include("department")).FirstOrDefault(i => i.stud_ID == st_id);
+            model.department = model.student.Select( f =>f.department); 
+           //var z= from x in _context.departments
+           //         where x.dept_ID == model.student.dept_ID
+           //         select x.dept_name;
+
+            //var x= _context.students.FirstOrDefault(
+            //    a => a.dept_ID == std.dept_ID);
+            //model.departments= _context.departments.FirstOrDefault(
+            //    a => a.dept_ID == department.dept_ID);
+
+            model.courses = _context.courses.ToList();
+            var crs = _context.courses.ToList();
+            return View(model);
+
+        }
+        public IActionResult stud_details2(student stud)
+        {
+
+           //student std = _context.students.FirstOrDefault(i => i.stud_Username == studentName);
+           // if (std == null || std.stud_pw != studentpassword)
+           // {
+           //     return RedirectToAction("Login");
+           // }
+            return View();
+        }
+
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
