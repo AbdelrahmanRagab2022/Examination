@@ -229,11 +229,8 @@ namespace Examination.Controllers
             //                where x.stud_ID == st_id
             //                select x;
            // model.student = _context.students.FirstOrDefault(i => i.stud_ID == st_id);
-            model.student = (_context.students.Include("department")).FirstOrDefault(i => i.stud_ID == st_id);
-            model.department = model.student.Select( f =>f.department); 
-           //var z= from x in _context.departments
-           //         where x.dept_ID == model.student.dept_ID
-           //         select x.dept_name;
+            model.student = _context.students.Include(i=>i.dept).FirstOrDefault(i => i.stud_ID == st_id);
+           
 
             //var x= _context.students.FirstOrDefault(
             //    a => a.dept_ID == std.dept_ID);

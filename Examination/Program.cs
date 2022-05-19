@@ -11,6 +11,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     .AddCookie(o =>
     {
         o.LoginPath = "/student/Login";
+
     });
 builder.Services.AddControllersWithViews();
 
