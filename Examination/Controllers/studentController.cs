@@ -10,6 +10,7 @@ using Examination.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using System.Dynamic;
 
 namespace Examination.Controllers
 {
@@ -17,7 +18,9 @@ namespace Examination.Controllers
     public class studentController : Controller
     {
         private readonly ExamSystemContext _context;
-
+         public student std;
+         public string studentName;
+         public string studentpassword;
         public studentController(ExamSystemContext context)
         {
             _context = context;
@@ -198,8 +201,10 @@ namespace Examination.Controllers
 
         public async Task<IActionResult> Login(string returnurl, string stud_Username, string stud_PW)
         {
+        //    studentName = stud_Username;
+        //    studentpassword = stud_PW;
             returnurl = returnurl ?? "/";
-            student std = _context.students.FirstOrDefault(i=>i.stud_Username== stud_Username);
+            std = _context.students.FirstOrDefault(i=>i.stud_Username== stud_Username);
             if(std == null || std.stud_pw!=stud_PW)
             {
                 return RedirectToAction("Login");
@@ -213,8 +218,31 @@ namespace Examination.Controllers
             identity.AddClaim(c3);
             ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync("Cookies", claimsPrincipal);
-            return Redirect(returnurl);
+            return RedirectToAction("stud_details" ,std);
         }
+        public IActionResult stud_details(student std)
+        {
+            std = this.std;
+            dynamic model = new ExpandoObject();
+            List<student> s = new List<student>();
+            s.Add(std);
+            model.student = s;
+            model.courses = _context.courses.ToList();
+            var crs = _context.courses.ToList();
+            return View(model);
+
+        }
+        public IActionResult stud_details2(student stud)
+        {
+
+           student std = _context.students.FirstOrDefault(i => i.stud_Username == studentName);
+            if (std == null || std.stud_pw != studentpassword)
+            {
+                return RedirectToAction("Login");
+            }
+            return View(std);
+        }
+
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();

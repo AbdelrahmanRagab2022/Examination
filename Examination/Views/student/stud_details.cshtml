@@ -1,0 +1,52 @@
+﻿@*@model IEnumerable<Examination.Models.course>
+@using Examination.Models*@
+@*@using MultipleModelInOneView;*@
+@model dynamic;
+
+
+
+@{
+    ViewData["Title"] = "stud_details";
+}
+
+@*<div>
+    <div>
+        <select>
+@{
+if(Model!=null)
+foreach(var x in Model){
+    <option>@x.c_name</option>
+}
+}
+
+}
+</select>
+
+<input type="button" class="btn-primary" value="Start Exam"/>
+    </div>
+    <div>
+        <a asp-action="stud_details2"> student details</a>
+    </div>
+</div>*@
+<div>
+    @{
+        foreach(student x in Model.student){
+                 <p>@x.stud_ID</p>
+                  <p>@x.stud_Fname</p>
+                   <p>@x.stud_Lname</p>
+        
+
+}}
+</div>
+<div>
+    @{
+        foreach(course c in Model.courses){
+                 <p>@c.c_ID</p>
+                  <p>@c.c_name</p>
+              
+        }
+
+}
+</div>
+
+
