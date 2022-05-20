@@ -1,7 +1,28 @@
 ﻿
 @{
     ViewData["Title"] = "EndExam";
+    var grade =@Model.Grades;
 }
 
-<h1>EndExam</h1>
+<div>
+    <table class="table table-dark table-striped table-hover table-bordered ">
+        <thead>
+            <tr>
+                <th>Course</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (var i in grade)
+                {
+                    <tr>
+                    <td>@i.Exam.course.c_name</td>
+                    <td>@i.st_grade</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
 

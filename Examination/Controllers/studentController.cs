@@ -237,6 +237,7 @@ namespace Examination.Controllers
             //    a => a.dept_ID == department.dept_ID);
 
             model.courses = _context.courses.ToList();
+            
             var crs = _context.courses.ToList();
             return View(model);
 
@@ -259,16 +260,17 @@ namespace Examination.Controllers
         }
 
         // New part
-        //Get : student/StartExam
-
-        public async Task<IActionResult> StartExam()
+        //Post : student/StartExam
+        [HttpPost]
+        public async Task<IActionResult> StartExam(string courseName)
         {
             
-            int StdId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "Stud_Id").Value);
+            int StdId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "stud_Id").Value);
 
             // int ExamID = await _context.Procedures.generateExam2Async("C#", 3, 7);
+            var n = 0;
 
-            int ExamID = await _context.Procedures.generateExamAsync("C#", StdId, 3, 7);
+            int ExamID = await _context.Procedures.generateExamAsync(courseName, StdId, 3, 7);
             await _context.Procedures.AssignExamStudentAsync(ExamID, StdId);
             List<question> eq = _context.exams_questions.Include(i => i.q_IDNavigation).ThenInclude(i => i.choices).Where(i => i.exam_ID == ExamID).Select(i => i.q_IDNavigation).ToList();
             int cnt = 0;
@@ -299,15 +301,32 @@ namespace Examination.Controllers
 
         // Post student / EndExam
         [HttpPost]
-        public async Task<IActionResult> EndExam(string ExamId, string q1, string q2, string q3, string q4, string q5, string q6, string q7, string q8, string q9, string q10)
+        public async Task<IActionResult> EndExam(string ExamId, string returnurl, string q1, string q2, string q3, string q4, string q5, string q6, string q7, string q8, string q9, string q10)
         {
-            
-            int StdId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "Stud_Id").Value);
+            if(ExamId ==null ||ExamId=="")
+            {
+                return BadRequest();
+            }
+            dynamic model = new ExpandoObject();
+            int StdId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "stud_Id").Value);
             await _context.Procedures.examAnsAsync(int.Parse(ExamId), StdId, int.Parse(q1), int.Parse(q2), int.Parse(q3), int.Parse(q4), int.Parse(q5)
                  , int.Parse(q6), int.Parse(q7), int.Parse(q8), int.Parse(q9), int.Parse(q10));
 
             await _context.Procedures.correctExamAsync(int.Parse(ExamId), StdId);
-            _context
+            List <Exam_Student> EStd =  _context.Exam_Students.Include(i=>i.Exam).ThenInclude(i=>i.course).Where(i=>i.St_ID==StdId).ToList();
+            model.Grades = EStd;
+            return View(model);
+        }
+        // Get student/EndExam
+        public async Task<IActionResult> EndExam()
+        {
+            dynamic model = new ExpandoObject();
+            int StdId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "stud_Id").Value);
+
+            List<Exam_Student> EStd = _context.Exam_Students.Include(i => i.Exam).ThenInclude(i => i.course).Where(i => i.St_ID == StdId).ToList();
+            model.Grades = EStd;
+            model.Courses = EStd.Select(i => i.Exam.course.c_name).ToList();
+            return View(model);
             return View();
         }
 

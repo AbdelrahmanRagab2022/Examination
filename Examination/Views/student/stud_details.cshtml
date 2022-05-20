@@ -1,5 +1,6 @@
 ﻿@*@model IEnumerable<Examination.Models.course>*@
-@using Examination.Models
+@using Examination.Models;
+@using System.Collections;
 @*
 
 @using MultipleModelInOneView; *@
@@ -12,6 +13,9 @@
     ViewData["Title"] = "stud_details";
     student std = @Model.student;
     department dpt = std.dept;
+    
+   
+    
 }
 
 @*<div>
@@ -38,6 +42,7 @@ foreach(var x in Model){
         <style>
             .main{
                 display:flex;
+                flex-direction:column;
         
             }
             .details{
@@ -45,6 +50,7 @@ foreach(var x in Model){
                 width:300px;
                 height:200px;
                 padding:5px;
+
             }
             select{
                 display:block;
@@ -55,20 +61,33 @@ foreach(var x in Model){
     </head>
     <body>
        <div class="container main">
-            <div class="details">
-                <p> ID :@std.stud_ID</p>
-                 <p> NAME :@(std.stud_Fname +" "+ @std.stud_Lname)</p>
-                   <p>DEPT ID :@dpt.dept_name</p>
-</div>
-    <div class="courses">
-        <select>
+            <div class="details bg-dark rounded-3">
+                <p class="text-white"> ID :@std.stud_ID</p>
+                 <p class="text-white"> NAME :@(std.stud_Fname +" "+ @std.stud_Lname)</p>
+                   <p class="text-white">DEPT ID :@dpt.dept_name</p>
+            </div>
+       <div class="courses">
+        <form method="POST" action="StartExam">
+    @*    <select name="courseName">
     @{
         foreach(course c in Model.courses){
-                        <option>@c.c_name</option>
+                        <option value="@c.c_name">@c.c_name</option>
 
             }}
+    </select>*@
+
+    @{
+       SelectList sl = new SelectList(@Model.courses, "c_name", "c_name");
+       //@Html.DropDownList("courseName",sl,"Select Course");
+
+       
+    <select asp-items="sl" name="courseName">
+
     </select>
-    <input type="button" asp-action=""  asp-asp-controller="student" value="Start Exam" class="btn-success"/> <!--here is tsrt exam action ->
+     }
+
+    <input type="submit"  value="Start Exam" class="btn-primary"/> <!--here is tsrt exam action ->
+        </form>
     </div>
 </div>
     </body>
