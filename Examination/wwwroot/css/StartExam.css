@@ -1,0 +1,11 @@
+.p-5 {
+    padding: 10px;
+}
+
+body {
+    margin-bottom: 60px;
+    background-image: url('../Image/cover.png');
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+}

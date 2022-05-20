@@ -11,6 +11,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using System.Dynamic;
+using System.Collections;
 
 namespace Examination.Controllers
 {
@@ -188,7 +189,8 @@ namespace Examination.Controllers
 
         private bool studentExists(int id)
         {
-          return (_context.students?.Any(e => e.stud_ID == id)).GetValueOrDefault();
+            
+            return (_context.students?.Any(e => e.stud_ID == id)).GetValueOrDefault();
         }
         [AllowAnonymous]
         public IActionResult Login()
@@ -200,8 +202,7 @@ namespace Examination.Controllers
 
         public async Task<IActionResult> Login(string returnurl, string stud_Username, string stud_PW)
         {
-        //    studentName = stud_Username;
-        //    studentpassword = stud_PW;
+        
             returnurl = returnurl ?? "/";
             std = _context.students.FirstOrDefault(i=>i.stud_Username== stud_Username);
             if(std == null || std.stud_pw!=stud_PW)
@@ -210,7 +211,7 @@ namespace Examination.Controllers
             }
             Claim c1 = new Claim("stud_Username", stud_Username);
             Claim c2 = new Claim("stud_Pw", stud_PW);
-            Claim c4 = new Claim("stud_ID", std.stud_ID.ToString());
+            Claim c4 = new Claim("stud_Id", std.stud_ID.ToString());
             Claim c3 = new Claim(ClaimTypes.Role, "Student");
             ClaimsIdentity identity = new ClaimsIdentity("Cookies");
             identity.AddClaim(c1);
@@ -223,12 +224,13 @@ namespace Examination.Controllers
         }
         public IActionResult stud_details()
         {
-           int st_id= int.Parse(HttpContext.User.Claims.FirstOrDefault(a=>a.Type=="stud_ID").Value);
+            if (HttpContext.User.IsInRole("Student"))
+            {
+                return NotFound();
+            }
+            int st_id= int.Parse(HttpContext.User.Claims.FirstOrDefault(a=>a.Type=="stud_Id").Value);
             dynamic model = new ExpandoObject();
-            //model.student = from x in _context.students
-            //                where x.stud_ID == st_id
-            //                select x;
-           // model.student = _context.students.FirstOrDefault(i => i.stud_ID == st_id);
+            
             model.student = _context.students.Include(i=>i.dept).FirstOrDefault(i => i.stud_ID == st_id);
            
 
@@ -258,6 +260,68 @@ namespace Examination.Controllers
             await HttpContext.SignOutAsync();
             return Redirect("/");
         }
+
+        // New part
+        //Get : student/StartExam
+
+        public async Task<IActionResult> StartExam()
+        {
+            if (HttpContext.User.IsInRole("Student"))
+            {
+                return NotFound();
+            }
+            int StdId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "Stud_Id").Value);
+
+            // int ExamID = await _context.Procedures.generateExam2Async("C#", 3, 7);
+
+            int ExamID = await _context.Procedures.generateExamAsync("C#", StdId, 3, 7);
+            await _context.Procedures.AssignExamStudentAsync(ExamID, StdId);
+            List<question> eq = _context.exams_questions.Include(i => i.q_IDNavigation).ThenInclude(i => i.choices).Where(i => i.exam_ID == ExamID).Select(i => i.q_IDNavigation).ToList();
+            int cnt = 0;
+
+            Dictionary<int, ArrayList> Qs = new Dictionary<int, ArrayList>();
+
+            // Dictionary<int, List<choice>> Dic= new Dictionary<int, List<choice>>();
+
+            foreach (var question in eq)
+            {
+                cnt++;
+                ArrayList QStr = new ArrayList();
+                //List<choice> ListChoice = new List<choice>();
+                QStr.Add(question.q_desc);
+                foreach (var ch in question.choices)
+                {
+                    QStr.Add(ch);
+                }
+                Qs.Add(cnt, QStr);
+
+
+            }
+
+            ViewBag.Qs = Qs;
+            ViewBag.ExamID = ExamID;
+            return View();
+        }
+
+        // Post student / EndExam
+        [HttpPost]
+        public async Task<IActionResult> EndExam(string ExamId, string q1, string q2, string q3, string q4, string q5, string q6, string q7, string q8, string q9, string q10)
+        {
+            if (HttpContext.User.IsInRole("Student"))
+            {
+                return NotFound();
+            }
+            int StdId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "Stud_Id").Value);
+            await _context.Procedures.examAnsAsync(int.Parse(ExamId), StdId, int.Parse(q1), int.Parse(q2), int.Parse(q3), int.Parse(q4), int.Parse(q5)
+                 , int.Parse(q6), int.Parse(q7), int.Parse(q8), int.Parse(q9), int.Parse(q10));
+
+            await _context.Procedures.correctExamAsync(int.Parse(ExamId), StdId);
+            return View();
+        }
+
+     
+        
+
 
 
     }

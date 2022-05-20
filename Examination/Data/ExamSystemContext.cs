@@ -19,6 +19,7 @@ namespace Examination.Data
         {
         }
 
+        public virtual DbSet<Exam_Student> Exam_Students { get; set; }
         public virtual DbSet<choice> choices { get; set; }
         public virtual DbSet<course> courses { get; set; }
         public virtual DbSet<department> departments { get; set; }
@@ -41,6 +42,25 @@ namespace Examination.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.UseCollation("Arabic_CI_AS");
+
+            modelBuilder.Entity<Exam_Student>(entity =>
+            {
+                entity.HasKey(e => new { e.St_ID, e.Exam_ID });
+
+                entity.ToTable("Exam_Student");
+
+                entity.HasOne(d => d.Exam)
+                    .WithMany(p => p.Exam_Students)
+                    .HasForeignKey(d => d.Exam_ID)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Exam_Student_exams");
+
+                entity.HasOne(d => d.St)
+                    .WithMany(p => p.Exam_Students)
+                    .HasForeignKey(d => d.St_ID)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Exam_Student_students");
+            });
 
             modelBuilder.Entity<choice>(entity =>
             {
