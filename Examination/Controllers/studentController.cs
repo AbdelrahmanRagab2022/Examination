@@ -231,10 +231,6 @@ namespace Examination.Controllers
             model.student = _context.students.Include(i=>i.dept).FirstOrDefault(i => i.stud_ID == st_id);
            
 
-            //var x= _context.students.FirstOrDefault(
-            //    a => a.dept_ID == std.dept_ID);
-            //model.departments= _context.departments.FirstOrDefault(
-            //    a => a.dept_ID == department.dept_ID);
 
             model.courses = _context.courses.ToList();
             
@@ -242,16 +238,7 @@ namespace Examination.Controllers
             return View(model);
 
         }
-        public IActionResult stud_details2(student stud)
-        {
-
-           //student std = _context.students.FirstOrDefault(i => i.stud_Username == studentName);
-           // if (std == null || std.stud_pw != studentpassword)
-           // {
-           //     return RedirectToAction("Login");
-           // }
-            return View();
-        }
+        
 
         public async Task<IActionResult> Logout()
         {
@@ -267,8 +254,6 @@ namespace Examination.Controllers
             
             int StdId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "stud_Id").Value);
 
-            // int ExamID = await _context.Procedures.generateExam2Async("C#", 3, 7);
-            var n = 0;
 
             int ExamID = await _context.Procedures.generateExamAsync(courseName, StdId, 3, 7);
             await _context.Procedures.AssignExamStudentAsync(ExamID, StdId);
@@ -277,13 +262,11 @@ namespace Examination.Controllers
 
             Dictionary<int, ArrayList> Qs = new Dictionary<int, ArrayList>();
 
-            // Dictionary<int, List<choice>> Dic= new Dictionary<int, List<choice>>();
 
             foreach (var question in eq)
             {
                 cnt++;
                 ArrayList QStr = new ArrayList();
-                //List<choice> ListChoice = new List<choice>();
                 QStr.Add(question.q_desc);
                 foreach (var ch in question.choices)
                 {
