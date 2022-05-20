@@ -1,0 +1,69 @@
+﻿
+@{
+    Layout = null;
+    ViewBag.Title = "StartExam";
+    int ExamId = ViewBag.ExamId;
+    @using System.Collections;
+    Dictionary<int , ArrayList> qs = (Dictionary<int , ArrayList>)ViewBag.Qs;
+
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>StartExam</title>
+    <style>
+        .p-5{
+            padding:10px;
+        }
+       
+    </style>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+     <link rel="stylesheet" href="~/css/StartExam.css" asp-append-version="true" />
+
+</head>
+<body>
+    <form method="POST" action="EndExam">
+        @{
+            var cnt = 1;
+            foreach(var q in qs)
+            {
+                string n = "q" + @cnt;
+                <div class="">
+                
+                @foreach(var ch in @q.Value)
+                {
+                    <div class="p-5">
+                    @if(@q.Value[0]==ch)
+                    {
+                                <label>@cnt-@ch</label><br/>
+                            }
+                            else
+                            {           choice cc = (choice)@ch;
+                               
+                                <input type="radio" value="@cc.choice_ID"  name="@n"/>
+                                <label>@cc.choice_desc</label>
+                        <br/>
+
+                    }
+                    </div>
+                     
+
+
+                }
+                </div>
+                cnt++;
+            }
+        }
+        
+        <input type="text" style="visibility:hidden" name="ExamId" value="@ExamId.ToString()" />
+        <input type="submit" class="btn btn-primary" value="End Exam" />
+    </form>
+    
+       
+           
+</body>
+</html>
