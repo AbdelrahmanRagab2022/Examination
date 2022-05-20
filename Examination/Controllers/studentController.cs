@@ -29,6 +29,11 @@ namespace Examination.Controllers
         // GET: student
         public async Task<IActionResult> Index()
         {
+
+            if (HttpContext.User.IsInRole("Student"))
+            {
+                return NotFound();
+            }
             var examSystemContext = _context.students.Include(s => s.dept);
             return View(await examSystemContext.ToListAsync());
         }

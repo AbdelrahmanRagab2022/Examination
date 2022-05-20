@@ -9,6 +9,7 @@
       <li class="nav-item">
       <a class="nav-link text-white" asp-area="" asp-controller="student" asp-action="stud_details">Home</a>
         </li>
+        <li>
         <a class="nav-link text-white" asp-area="" asp-controller="student" asp-action="EndExam">Exam Grades</a>
         </li>
       <li class="nav-item">
@@ -17,6 +18,15 @@
     }
     else
     {
+       
+        <li class="nav-item">
+      <a class="nav-link text-white" asp-area="" asp-controller="student" asp-action="Index">Display Students</a>
+    </li> 
+    <li class="nav-item">
+      <a class="nav-link text-white" asp-area="" asp-controller="student" asp-action="Create">Create Student</a>
+    </li> 
+    
+    
        <li class="nav-item">
       <a class="nav-link text-white" asp-area="" asp-controller="instructor" asp-action="Logout">Logout</a>
     </li> 
