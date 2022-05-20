@@ -224,10 +224,7 @@ namespace Examination.Controllers
         }
         public IActionResult stud_details()
         {
-            if (HttpContext.User.IsInRole("Student"))
-            {
-                return NotFound();
-            }
+           
             int st_id= int.Parse(HttpContext.User.Claims.FirstOrDefault(a=>a.Type=="stud_Id").Value);
             dynamic model = new ExpandoObject();
             
@@ -266,10 +263,7 @@ namespace Examination.Controllers
 
         public async Task<IActionResult> StartExam()
         {
-            if (HttpContext.User.IsInRole("Student"))
-            {
-                return NotFound();
-            }
+            
             int StdId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "Stud_Id").Value);
 
             // int ExamID = await _context.Procedures.generateExam2Async("C#", 3, 7);
@@ -307,15 +301,13 @@ namespace Examination.Controllers
         [HttpPost]
         public async Task<IActionResult> EndExam(string ExamId, string q1, string q2, string q3, string q4, string q5, string q6, string q7, string q8, string q9, string q10)
         {
-            if (HttpContext.User.IsInRole("Student"))
-            {
-                return NotFound();
-            }
+            
             int StdId = int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "Stud_Id").Value);
             await _context.Procedures.examAnsAsync(int.Parse(ExamId), StdId, int.Parse(q1), int.Parse(q2), int.Parse(q3), int.Parse(q4), int.Parse(q5)
                  , int.Parse(q6), int.Parse(q7), int.Parse(q8), int.Parse(q9), int.Parse(q10));
 
             await _context.Procedures.correctExamAsync(int.Parse(ExamId), StdId);
+            _context
             return View();
         }
 
