@@ -1,9 +1,8 @@
 ﻿@*@model IEnumerable<Examination.Models.course>*@
 @using Examination.Models;
 @using System.Collections;
-@*
 
-@using MultipleModelInOneView; *@
+
 
 @model dynamic;
 
@@ -12,9 +11,9 @@
 @{
     ViewData["Title"] = "stud_details";
     student std = @Model.student;
-    department dpt = std.dept;
-    
-   
+    department dpt = std.dept  ;
+    SelectList sl = new SelectList(@Model.courses, "c_name", "c_name");
+
     
 }
 
@@ -59,36 +58,47 @@ foreach(var x in Model){
         </style>
         <link rel="stylesheet" href="../wwwroot/lib/bootstrap/dist/css/bootstrap.css"/>
     </head>
-    <body>
-       <div class="container main">
-            <div class="details bg-dark rounded-3">
-                <p class="text-white"> ID :@std.stud_ID</p>
-                 <p class="text-white"> NAME :@(std.stud_Fname +" "+ @std.stud_Lname)</p>
-                   <p class="text-white">DEPT ID :@dpt.dept_name</p>
-            </div>
-       <div class="courses">
+    <body>     
+
+        <div class="row bg-dark text-white w-25 ">
+ 
+         <hr />
+         <dl class="row col-sm-12 ">
+            <dt class = "col-sm-5 ">
+             ID :
+             </dt>
+            <dd class = "col-sm-7">
+            @std.stud_ID
+            </dd>
+
+         <dt class = "col-sm-5 ">
+             Name :
+        </dt>
+        <dd class = "col-sm-7">
+            @(std.stud_Fname + " " + @std.stud_Lname)
+        </dd>
+
+        <dt class = "col-sm-5 ">
+            Department :
+        </dt>
+        <dd class = "col-sm-7">
+            @dpt.dept_name
+        </dd>
+    </dl>
+    <div>
         <form method="POST" action="StartExam">
-    @*    <select name="courseName">
-    @{
-        foreach(course c in Model.courses){
-                        <option value="@c.c_name">@c.c_name</option>
-
-            }}
-    </select>*@
-
-    @{
-       SelectList sl = new SelectList(@Model.courses, "c_name", "c_name");
-       //@Html.DropDownList("courseName",sl,"Select Course");
-
-       
-    <select asp-items="sl" name="courseName">
-
-    </select>
-     }
-
-    <input type="submit"  value="Start Exam" class="btn-primary"/> <!--here is tsrt exam action ->
+            <select asp-items="sl" name="courseName" class="m-1"></select>
+   
+            <input type="submit"  value="Start Exam" class="btn-primary btn m-1 "/> 
         </form>
+
     </div>
+    
+
+</div>
+
+           
+   
 </div>
     </body>
 </html>

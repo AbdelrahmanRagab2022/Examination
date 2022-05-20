@@ -6,43 +6,43 @@
 
 <h1>Details</h1>
 
-<div class="row">
+<div class="row bg-dark text-white w-25 ">
     <h4>student</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-6 ">
             @Html.DisplayNameFor(model => model.stud_Fname)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-6">
             @Html.DisplayFor(model => model.stud_Fname)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-6">
             @Html.DisplayNameFor(model => model.stud_Lname)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-6">
             @Html.DisplayFor(model => model.stud_Lname)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-6">
             @Html.DisplayNameFor(model => model.stud_Username)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-6">
             @Html.DisplayFor(model => model.stud_Username)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-6">
             @Html.DisplayNameFor(model => model.stud_pw)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-6">
             @Html.DisplayFor(model => model.stud_pw)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-6">
             @Html.DisplayNameFor(model => model.dept)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class = "col-sm-6">
             @Html.DisplayFor(model => model.dept.dept_name)
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.stud_ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="m-2">
+    <a asp-action="Edit" class="btn-dark btn" asp-route-id="@Model?.stud_ID">Edit</a> |
+    <a asp-action="Index" class="btn-dark btn">Back to List</a>
 </div>
